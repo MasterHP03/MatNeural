@@ -1,13 +1,16 @@
 import numpy as np
 
 class Layer:
+    def __call__(self, X):
+        return self.forward(X)
+
     def forward(self, X):
         pass
 
     def backward(self, dZ):
         pass
 
-    def update(self, learning_rate, beta_v, beta_s, epsilon):
+    def update(self, learning_rate=0.1, beta_v=0.9, beta_s=0.999, epsilon=1e-8):
         pass
 
 class LinearLayer(Layer):
@@ -38,7 +41,7 @@ class LinearLayer(Layer):
         dX = self.W.T @ dZ
         return dX
 
-    def update(self, learning_rate, beta_v, beta_s, epsilon):
+    def update(self, learning_rate=0.1, beta_v=0.9, beta_s=0.999, epsilon=1e-8):
         self.t += 1
 
         self.v_W = beta_v * self.v_W + (1 - beta_v) * self.dW
@@ -83,8 +86,11 @@ class ReLULayer(Layer):
         return dZ
 
 class Sequential:
-    def __init__(self):
-        self.layers = []
+    def __init__(self, *layers):
+        self.layers = list(layers)
+
+    def __call__(self, X):
+        return self.forward(X)
 
     def add(self, layer):
         self.layers.append(layer)
@@ -101,7 +107,7 @@ class Sequential:
             dout = layer.backward(dout)
         return dout
 
-    def step(self, learning_rate, beta_v, beta_s, epsilon):
+    def step(self, learning_rate=0.1, beta_v=0.9, beta_s=0.999, epsilon=1e-8):
         for layer in self.layers:
             layer.update(learning_rate, beta_v, beta_s, epsilon)
 
@@ -112,23 +118,24 @@ tY = np.array([[0, 1, 1, 0]])
 
 success = 0
 
-for _ in range(100):
-    model = Sequential()
-    model.add(LinearLayer(2, 4))
-    model.add(ReLULayer(coeff_leaky=0.01))
-    model.add(LinearLayer(4, 1))
-    model.add(SigmoidLayer())
+for trial in range(100):
+    model = Sequential(
+        LinearLayer(2, 4),
+        ReLULayer(coeff_leaky=0.01),
+        LinearLayer(4, 1),
+        SigmoidLayer()
+    )
 
-    predictions = [[]]
+    predictions = None
     for epoch in range(10000):
-        predictions = model.forward(tX)
+        predictions = model(tX)
         dLoss = (predictions - tY)
 
         model.backward(dLoss)
         model.step(learning_rate=0.1, beta_v=0.9, beta_s=0.999, epsilon=1e-8)
 
-    print("Prediction\n", np.round(predictions, 2))
-    if predictions[0][0] < 0.1 and predictions[0][3] < 0.1 and predictions[0][1] > 0.9 and predictions[0][2] > 0.9:
+    print(f"Prediction {trial}\n", np.round(predictions, 2))
+    if np.allclose(predictions, tY, atol=0.1):
         success += 1
 
 print(success)
