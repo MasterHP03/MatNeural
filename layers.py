@@ -31,6 +31,21 @@ class LinearLayer(Layer):
         dX = self.W.T @ dZ
         return dX
 
+class ReLULayer(Layer):
+    def __init__(self, coeff_leaky=0.01):
+        self.cache_A = None
+        self.coeff_leaky = coeff_leaky
+
+    def forward(self, Z):
+        A = np.maximum(Z * self.coeff_leaky, Z)
+        self.cache_A = A
+        return A
+
+    def backward(self, dA):
+        A = self.cache_A
+        dZ = dA * ((A >= 0) + self.coeff_leaky * (A < 0))
+        return dZ
+
 class SigmoidLayer(Layer):
     def __init__(self):
         self.cache_A = None
@@ -45,17 +60,29 @@ class SigmoidLayer(Layer):
         dZ = dA * (A * (1 - A))
         return dZ
 
-class ReLULayer(Layer):
-    def __init__(self, coeff_leaky):
+class TanhLayer(Layer):
+    def __init__(self):
         self.cache_A = None
-        self.coeff_leaky = coeff_leaky
 
     def forward(self, Z):
-        A = np.maximum(Z * self.coeff_leaky, Z)
+        A = np.tanh(Z)
         self.cache_A = A
         return A
 
     def backward(self, dA):
         A = self.cache_A
-        dZ = dA * ((A >= 0) + self.coeff_leaky * (A < 0))
+        dZ = dA * (1 - A ** 2)
         return dZ
+
+class SoftmaxLayer(Layer):
+    def __init__(self):
+        self.cache_A = None
+
+    def forward(self, Z):
+        exp_Z = np.exp(Z - np.max(Z, axis=0, keepdims=True))
+        A = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
+        self.cache_A = A
+        return A
+
+    def backward(self, dA):
+        return dA

@@ -1,7 +1,7 @@
 import numpy as np
 
 class Adam:
-    def __init__(self, model, learning_rate=0.1, beta_v=0.9, beta_s=0.999, epsilon=1e-8):
+    def __init__(self, model, learning_rate=1e-3, beta_v=0.9, beta_s=0.999, epsilon=1e-8):
         self.model = model
         self.lr = learning_rate
         self.beta_v = beta_v
