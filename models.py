@@ -1,3 +1,6 @@
+import pickle
+
+
 class Sequential:
     """
     Container that sequentially connects several layers
@@ -40,3 +43,17 @@ class Sequential:
         for layer in reversed(self.layers):
             dout = layer.backward(dout)
         return dout
+
+    def save(self, filename):
+        params = [(l.W, l.B) if hasattr(l, 'W') else None for l in self.layers]
+        with open(filename, 'wb') as f:
+            pickle.dump(params, f)
+        print(f"Saved weights and biases to {filename}")
+
+    def load(self, filename):
+        with open(filename, 'rb') as f:
+            params = pickle.load(f)
+        for i, layer in enumerate(self.layers):
+            if params[i] is not None:
+                layer.W, layer.B = params[i]
+        print(f"Loaded weights and biases from {filename}")
