@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from layers import LinearLayer, ReLULayer, SoftmaxLayer
-from losses import CrossEntropyLoss
-from models import Sequential
-from optimizers import Adam
+from core.layers import LinearLayer, ReLULayer, SoftmaxLayer
+from core.losses import CrossEntropyLoss
+from core.models import Sequential
+from core.optimizers import Adam
 import time
 
 np.random.seed(42)

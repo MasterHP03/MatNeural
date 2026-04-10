@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_openml
-from layers import LinearLayer, ReLULayer, SoftmaxLayer
-from models import Sequential
-from optimizers import Adam
-from losses import CrossEntropyLoss
+from core.layers import LinearLayer, ReLULayer, SoftmaxLayer
+from core.models import Sequential
+from core.optimizers import Adam
+from core.losses import CrossEntropyLoss
 
 print("Loading data...")
 mnist = fetch_openml('mnist_784', version=1, cache=True, as_frame=False)

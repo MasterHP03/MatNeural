@@ -1,7 +1,7 @@
 import numpy as np
-from layers import LinearLayer, ReLULayer, SigmoidLayer
-from models import Sequential
-from optimizers import Adam
+from core.layers import LinearLayer, ReLULayer
+from core.models import Sequential
+from core.optimizers import Adam
 import matplotlib.pyplot as plt
 
 tX = np.linspace(0, 2 * np.pi, 100).reshape(1, 100)

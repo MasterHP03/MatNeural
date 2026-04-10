@@ -1,9 +1,8 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from layers import LinearLayer, ReLULayer, SoftmaxLayer, SigmoidLayer
-from models import Sequential
-from optimizers import Adam
-from losses import CrossEntropyLoss, MSELoss
+from core.layers import LinearLayer, ReLULayer, SoftmaxLayer
+from core.models import Sequential
+from core.optimizers import Adam
+from core.losses import CrossEntropyLoss
 import time
 
 vocab = ['movie', 'really', 'good', 'fun', 'wasted', 'time', 'worst', 'boring', 'money', 'evaporated']

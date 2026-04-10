@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_openml
-from layers import LinearLayer, ReLULayer, SoftmaxLayer, SigmoidLayer
-from models import Sequential
-from optimizers import Adam
-from losses import CrossEntropyLoss, MSELoss
+from core.layers import LinearLayer, ReLULayer, SigmoidLayer
+from core.models import Sequential
+from core.optimizers import Adam
+from core.losses import MSELoss
 import time
 
 print("Loading data...")

@@ -1,9 +1,8 @@
 import numpy as np
-from layers import LinearLayer, ReLULayer, SigmoidLayer, SoftmaxLayer
-from losses import CrossEntropyLoss
-from models import Sequential
-from optimizers import Adam
-import matplotlib.pyplot as plt
+from core.layers import LinearLayer, ReLULayer, SoftmaxLayer
+from core.losses import CrossEntropyLoss
+from core.models import Sequential
+from core.optimizers import Adam
 from sklearn.datasets import load_iris
 
 iris = load_iris()
